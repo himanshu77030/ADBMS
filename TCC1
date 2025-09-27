@@ -1,0 +1,41 @@
+DROP TABLE IF EXISTS FeePayments;
+
+CREATE TABLE FeePayments (
+    payment_id INT PRIMARY KEY,
+    student_name VARCHAR(100) NOT NULL,
+    amount DECIMAL(10,2) CHECK (amount > 0),
+    payment_date DATE
+);
+
+-- Part A: Successful transaction
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (1, 'Ashish', 5000.00, '2024-06-01');
+INSERT INTO FeePayments VALUES (2, 'Smaran', 4500.00, '2024-06-02');
+INSERT INTO FeePayments VALUES (3, 'Vaibhav', 5500.00, '2024-06-03');
+COMMIT;
+
+SELECT * FROM FeePayments;
+
+-- Part B: Rollback transaction (valid inserts, but rolled back manually)
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (4, 'Kiran', 4800.00, '2024-06-04');
+INSERT INTO FeePayments VALUES (5, 'Ravi', 4600.00, '2024-06-05');
+ROLLBACK;
+
+SELECT * FROM FeePayments;
+
+-- Part C: Another rollback example (simulating partial failure)
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (6, 'Sneha', 4700.00, '2024-06-08');
+INSERT INTO FeePayments VALUES (7, 'Amit', 4900.00, '2024-06-09');
+ROLLBACK;
+
+SELECT * FROM FeePayments;
+
+-- Part D: Final successful transaction
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (8, 'Neha', 5200.00, '2024-06-10');
+INSERT INTO FeePayments VALUES (9, 'Arjun', 4950.00, '2024-06-11');
+COMMIT;
+
+SELECT * FROM FeePayments;
